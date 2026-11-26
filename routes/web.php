@@ -1,148 +1,160 @@
 <?php
 
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\StudentController;
 use App\Models\Course;
 use App\Models\Student;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
-Route::get('/students', function () {
-    $students = Student::all();
+// workshop-1
 
-    return view('student.list', [
-        'students' => $students
-    ]);
-});
+// Route::get('/students', function () {
+//     $students = Student::all();
 
-Route::get('/students/create', function () {
-    return view('student.create');
-});
+//     return view('student.list', [
+//         'students' => $students
+//     ]);
+// });
 
-Route::post('/students', function (Request $request) {
+// Route::get('/students/create', function () {
+//     return view('student.create');
+// });
 
-    $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|max:255|unique:students,email',
-        'phone' => 'required|string|max:20',
-        'address' => 'nullable|string|max:500',
-        'date_of_birth' => 'nullable|date',
-    ]);
+// Route::post('/students', function (Request $request) {
 
-    Student::create($validated);
+//     $validated = $request->validate([
+//         'name' => 'required|string|max:255',
+//         'email' => 'required|email|max:255|unique:students,email',
+//         'phone' => 'required|string|max:20',
+//         'address' => 'nullable|string|max:500',
+//         'date_of_birth' => 'nullable|date',
+//     ]);
 
-    return redirect('/students')->with('success', 'Student created successfully!');
-});
+//     Student::create($validated);
 
-Route::get('/students/{id}', function ($id) {
-    $student = Student::findOrFail($id);
+//     return redirect('/students')->with('success', 'Student created successfully!');
+// });
 
-    return view('student.detail', [
-        'student' => $student
-    ]);
-});
+// Route::get('/students/{id}', function ($id) {
+//     $student = Student::findOrFail($id);
 
-Route::get('/students/{id}/edit', function ($id) {
-    $student = Student::findOrFail($id);
+//     return view('student.detail', [
+//         'student' => $student
+//     ]);
+// });
 
-    return view('student.edit', [
-        'student' => $student
-    ]);
-});
+// Route::get('/students/{id}/edit', function ($id) {
+//     $student = Student::findOrFail($id);
 
-Route::put('/students/{id}', function (Request $request, $id) {
+//     return view('student.edit', [
+//         'student' => $student
+//     ]);
+// });
 
-    $student = Student::findOrFail($id);
+// Route::put('/students/{id}', function (Request $request, $id) {
 
-    $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|max:255|unique:students,email,' . $student->id,
-        'phone' => 'required|string|max:20',
-        'address' => 'nullable|string|max:500',
-        'date_of_birth' => 'nullable|date',
-    ]);
+//     $student = Student::findOrFail($id);
 
-    $student->update($validated);
+//     $validated = $request->validate([
+//         'name' => 'required|string|max:255',
+//         'email' => 'required|email|max:255|unique:students,email,' . $student->id,
+//         'phone' => 'required|string|max:20',
+//         'address' => 'nullable|string|max:500',
+//         'date_of_birth' => 'nullable|date',
+//     ]);
 
-    return redirect('/students')->with('success', 'Student updated successfully!');
-});
+//     $student->update($validated);
 
-Route::delete('/students/{id}', function ($id) {
+//     return redirect('/students')->with('success', 'Student updated successfully!');
+// });
 
-    $student = Student::findOrFail($id);
+// Route::delete('/students/{id}', function ($id) {
 
-    $student->delete();
+//     $student = Student::findOrFail($id);
 
-    return redirect('/students')->with('success', 'Student deleted successfully!');
-});
+//     $student->delete();
 
-Route::get('/courses', function () {
-    $courses = Course::all();
+//     return redirect('/students')->with('success', 'Student deleted successfully!');
+// });
 
-    return view('course.list', [
-        'courses' => $courses
-    ]);
-});
+// Route::get('/courses', function () {
+//     $courses = Course::all();
 
-Route::get('/courses/create', function () {
-    return view('course.create');
-});
+//     return view('course.list', [
+//         'courses' => $courses
+//     ]);
+// });
 
-Route::post('/courses', function (Request $request) {
+// Route::get('/courses/create', function () {
+//     return view('course.create');
+// });
 
-    $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'description' => 'nullable|string',
-        'duration' => 'required|integer|min:1',
-        'fee' => 'required|numeric|min:0',
-        'difficulty' => 'required|in:Easy,Medium,Hard',
-    ]);
+// Route::post('/courses', function (Request $request) {
 
-    $validated['is_active'] = $request->has('is_active');
+//     $validated = $request->validate([
+//         'name' => 'required|string|max:255',
+//         'description' => 'nullable|string',
+//         'duration' => 'required|integer|min:1',
+//         'fee' => 'required|numeric|min:0',
+//         'difficulty' => 'required|in:Easy,Medium,Hard',
+//     ]);
 
-    Course::create($validated);
+//     $validated['is_active'] = $request->has('is_active');
 
-    return redirect('/courses')->with('success', 'Course created successfully!');
-});
+//     Course::create($validated);
 
-Route::get('/courses/{id}', function ($id) {
-    $course = Course::findOrFail($id);
+//     return redirect('/courses')->with('success', 'Course created successfully!');
+// });
 
-    return view('course.detail', [
-        'course' => $course
-    ]);
-});
+// Route::get('/courses/{id}', function ($id) {
+//     $course = Course::findOrFail($id);
 
-Route::get('/courses/{id}/edit', function ($id) {
-    $course = Course::findOrFail($id);
+//     return view('course.detail', [
+//         'course' => $course
+//     ]);
+// });
 
-    return view('course.edit', [
-        'course' => $course
-    ]);
-});
+// Route::get('/courses/{id}/edit', function ($id) {
+//     $course = Course::findOrFail($id);
 
-Route::put('/courses/{id}', function (Request $request, $id) {
+//     return view('course.edit', [
+//         'course' => $course
+//     ]);
+// });
 
-    $course = Course::findOrFail($id);
+// Route::put('/courses/{id}', function (Request $request, $id) {
 
-    $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'description' => 'nullable|string',
-        'duration' => 'required|integer|min:1',
-        'fee' => 'required|numeric|min:0',
-        'difficulty' => 'required|in:Easy,Medium,Hard',
-    ]);
+//     $course = Course::findOrFail($id);
 
-    $validated['is_active'] = $request->has('is_active');
+//     $validated = $request->validate([
+//         'name' => 'required|string|max:255',
+//         'description' => 'nullable|string',
+//         'duration' => 'required|integer|min:1',
+//         'fee' => 'required|numeric|min:0',
+//         'difficulty' => 'required|in:Easy,Medium,Hard',
+//     ]);
 
-    $course->update($validated);
+//     $validated['is_active'] = $request->has('is_active');
 
-    return redirect('/courses')->with('success', 'Course updated successfully!');
-});
+//     $course->update($validated);
 
-Route::delete('/courses/{id}', function ($id) {
+//     return redirect('/courses')->with('success', 'Course updated successfully!');
+// });
 
-    $course = Course::findOrFail($id);
+// Route::delete('/courses/{id}', function ($id) {
 
-    $course->delete();
+//     $course = Course::findOrFail($id);
 
-    return redirect('/courses')->with('success', 'Course deleted successfully!');
-});
+//     $course->delete();
+
+//     return redirect('/courses')->with('success', 'Course deleted successfully!');
+// });
+
+
+// workshop-1 till here 
+//workshop-2
+
+Route::resource('students', StudentController::class);
+
+Route::resource('courses', CourseController::class);
